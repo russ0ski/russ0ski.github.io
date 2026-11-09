@@ -377,22 +377,11 @@
         <div class="foot card-links"><a href="toolkit.html">saber más →</a><a href="https://drive.google.com/uc?export=download&amp;id=13vWvtYEYz-VR-GbqBQzNqsJAUkw1zcmf" target="_blank" rel="noopener">descargar en Google Drive ↗</a></div>
       </div>
       <div class="card">
-        <div class="icon">⚠</div>
-        <h3>Early Warning Bulletins</h3>
-        <p>Script que cruza fuentes públicas de vulnerabilidades recientes con el inventario de Qualys para generar boletines de alerta temprana personalizados por cliente.</p>
-        <div class="foot"><span class="status dev">en desarrollo</span><span class="tag">Python</span><span class="tag">Qualys API</span></div>
-      </div>
-      <div class="card">
-        <div class="icon">▤</div>
-        <h3>Qualys → Excel Exporter</h3>
-        <p>Extrae vulnerabilidades vía API y genera exports en Excel limpios y filtrados, listos para entregar al cliente sin tocarlos a mano.</p>
-        <div class="foot"><span class="status dev">en desarrollo</span><span class="tag">Python</span><span class="tag">openpyxl</span></div>
-      </div>
-      <div class="card">
-        <div class="icon">◔</div>
-        <h3>VM Metrics Deck</h3>
-        <p>Generación automática de presentaciones con la evolución de vulnerabilidades, severidades y tecnologías más afectadas.</p>
-        <div class="foot"><span class="status dev">en desarrollo</span><span class="tag">python-pptx</span><span class="tag">matplotlib</span></div>
+        <div class="icon">≣</div>
+        <h3>OSCP Cheatsheet</h3>
+        <p>Todas mis notas creadas de cada módulo de la OSCP, con el resumen del contenido y los comandos más importantes. De mí para la comunidad.</p>
+        <div class="foot"><span class="status">disponible</span><span class="tag">OSCP</span><span class="tag">notas</span></div>
+        <div class="foot card-links"><a href="https://russ0ski.github.io/oscp-notes/" target="_blank" rel="noopener">ver notas ↗</a></div>
       </div>
     </div>
     <p style="margin-top:24px;font-family:var(--mono);font-size:.85rem;color:var(--muted)">→ más código en <a href="https://github.com/russ0ski" target="_blank" rel="noopener">github.com/russ0ski</a></p>
@@ -410,6 +399,18 @@
         <h3>Clases de Hacking Ético</h3>
         <p>Clases particulares online de iniciación al Hacking. Aprende los conceptos necesarios y domina la metodología del Pentesting para iniciarte en este apasionante mundo, de la mano de un profesional del sector.</p>
         <div class="foot"><span class="cta-hint">solicitar info →</span></div>
+      </div>
+      <div class="card">
+        <div class="icon">⚠</div>
+        <h3>Early Warning Bulleter</h3>
+        <p>Cruza fuentes públicas de amenazas recientes con el inventario de Qualys para generar boletines de alerta temprana personalizados por cliente, con el listado de assets afectados y el detalle actualizado de mitigación.</p>
+        <div class="foot"><span class="price">a consultar</span></div>
+      </div>
+      <div class="card">
+        <div class="icon">♥</div>
+        <h3>Heartbeat Controller</h3>
+        <p>Reporte diario de los assets con un agente de Qualys instalado. Notifica qué máquinas llevan más de una semana o un mes sin reportar, revisa agentes duplicados e informa qué nuevos agentes se han instalado.</p>
+        <div class="foot"><span class="price">a consultar</span></div>
       </div>
       <div class="card">
         <div class="icon">⚙</div>
@@ -434,6 +435,18 @@
         <h3>Scripts listos para usar</h3>
         <p>Pequeñas herramientas empaquetadas para tareas concretas de seguridad y reporting. Próximamente.</p>
         <div class="foot"><span class="status dev">próximamente</span></div>
+      </div>
+      <div class="card">
+        <div class="icon">▤</div>
+        <h3>Qualys → Excel Exporter</h3>
+        <p>Extrae vulnerabilidades vía API y genera exports en Excel limpios y filtrados, listos para entregar al cliente sin tocarlos a mano.</p>
+        <div class="foot"><span class="price">a consultar</span></div>
+      </div>
+      <div class="card">
+        <div class="icon">◔</div>
+        <h3>VM Metrics Deck</h3>
+        <p>Generación automática de presentaciones con la evolución de vulnerabilidades, severidades y tecnologías más afectadas.</p>
+        <div class="foot"><span class="price">a consultar</span></div>
       </div>
     </div>
   </div>
@@ -496,7 +509,7 @@
       <div id="clasesOk" class="ok-view">
         <div class="ok-check">✓</div>
         <h3 class="ok-title">¡Solicitud enviada!</h3>
-        <p class="ok-text">Gracias por tu interés. Te responderé lo antes posible al correo que has indicado.</p>
+        <p class="ok-text">Gracias por tu interés. Me pondré en contacto contigo lo antes posible al correo que has indicado.</p>
         <button type="button" class="modal-send" onclick="closeClasesModal()">Cerrar</button>
       </div>
     </div>
@@ -505,7 +518,7 @@
 
 <script>
   document.getElementById('y').textContent = new Date().getFullYear();
-  const phrases = ["Cyber Security Engineer", "Detectar, priorizar y mitigar", "Qualys & Tenable automation", "Del scan al export en segundos", "OSCP, CPTS y CRTP en preparación"];
+  const phrases = ["Cyber Security Engineer", "Detectar, priorizar y mitigar", "Qualys & Tenable automation", "Del scan al export en segundos", "OSCP, CPTS y CRTP en proceso"];
   const el = document.getElementById('typed');
   let i = 0, j = 0, del = false;
   (function tick(){

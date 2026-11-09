@@ -156,6 +156,47 @@
 
   footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;font-family:var(--mono);font-size:.78rem;color:var(--muted)}
 
+  .card-clickable{cursor:pointer}
+  .cta-hint{margin-left:auto;font-family:var(--mono);font-size:.74rem;color:var(--accent2);transition:.2s}
+  .card-clickable:hover .cta-hint{color:var(--accent)}
+
+  /* Modal */
+  .modal-ov{position:fixed;inset:0;z-index:50;background:rgba(5,8,12,.78);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-ov.open{display:flex}
+  .modal{width:100%;max-width:480px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;box-shadow:0 30px 80px rgba(0,0,0,.6);max-height:92vh;overflow-y:auto}
+  .modal-bar{display:flex;align-items:center;gap:7px;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .modal-bar i{width:11px;height:11px;border-radius:50%;background:#ff5f57}
+  .modal-bar i:nth-child(2){background:#febc2e}.modal-bar i:nth-child(3){background:#28c840}
+  .modal-bar b{margin-left:auto;font-family:var(--mono);font-weight:400;font-size:.75rem;color:var(--muted)}
+  .modal-x{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;font-family:var(--mono);padding:0 4px;line-height:1}
+  .modal-x:hover{color:var(--accent)}
+  .modal-body{padding:24px}
+  .modal-body h3{font-family:var(--mono);font-size:1.25rem;color:#fff;margin-bottom:4px}
+  .modal-body h3::before{content:"$ ";color:var(--accent)}
+  .modal-body .sub{color:var(--muted);font-size:.9rem;margin-bottom:20px}
+  .fld{margin-bottom:16px}
+  .fld label{display:block;font-family:var(--mono);font-size:.78rem;color:var(--text);margin-bottom:6px}
+  .fld label .opt{color:var(--muted)}
+  .fld label .req{color:var(--accent)}
+  .fld input,.fld textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:11px 13px;color:var(--text);font-family:var(--sans);font-size:.95rem;transition:border-color .2s}
+  .fld input:focus,.fld textarea:focus{outline:none;border-color:var(--accent)}
+  .fld textarea{resize:vertical;min-height:96px}
+  .fld .err{display:none;color:#ff6b6b;font-size:.76rem;margin-top:5px;font-family:var(--mono)}
+  .fld.invalid .err{display:block}
+  .fld.invalid input{border-color:#ff6b6b}
+  .modal-send{width:100%;font-family:var(--mono);font-size:.92rem;padding:12px;border-radius:7px;border:1px solid var(--accent);background:var(--accent);color:var(--bg);cursor:pointer;transition:.2s;font-weight:600}
+  .modal-send:hover{box-shadow:0 0 20px rgba(57,255,136,.4)}
+  .modal-note{margin-top:12px;font-family:var(--mono);font-size:.72rem;color:var(--muted);text-align:center}
+  .hp{display:none !important}
+  .modal-err{display:none;margin-top:12px;font-family:var(--mono);font-size:.76rem;color:#ff6b6b;text-align:center}
+  .modal-err.show{display:block}
+  .modal-send:disabled{opacity:.6;cursor:default;box-shadow:none}
+  .ok-view{display:none;text-align:center;padding:14px 4px 6px}
+  .ok-view.show{display:block}
+  .ok-check{width:66px;height:66px;margin:0 auto 18px;border-radius:50%;background:rgba(57,255,136,.12);border:1.5px solid var(--accent);color:var(--accent);font-size:2rem;display:flex;align-items:center;justify-content:center}
+  .ok-title{font-family:var(--mono);font-size:1.3rem;color:#fff;margin-bottom:10px}
+  .ok-text{color:var(--muted);font-size:.93rem;margin-bottom:22px;line-height:1.6}
+
   .reveal{opacity:0;transform:translateY(18px);transition:.6s ease}
   .reveal.on{opacity:1;transform:none}
   @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.cursor{animation:none}}
@@ -364,11 +405,11 @@
     <h2 class="sec-title">./services --list</h2>
     <p class="sec-sub">en qué puedo ayudarte</p>
     <div class="grid">
-      <div class="card">
+      <div class="card card-clickable" onclick="openClasesModal()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openClasesModal()}">
         <div class="icon">✎</div>
         <h3>Clases de Hacking Ético</h3>
         <p>Clases particulares online de iniciación al Hacking. Aprende los conceptos necesarios y domina la metodología del Pentesting para iniciarte en este apasionante mundo, de la mano de un profesional del sector.</p>
-        <div class="foot"><span class="price">a consultar</span></div>
+        <div class="foot"><span class="cta-hint">solicitar info →</span></div>
       </div>
       <div class="card">
         <div class="icon">⚙</div>
@@ -424,6 +465,44 @@
   <div class="wrap">© <span id="y"></span> russ0ski · All rights reserved · <span style="color:var(--accent)">exit 0</span></div>
 </footer>
 
+<div class="modal-ov" id="clasesModal" onclick="if(event.target===this)closeClasesModal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="clasesTitle">
+    <div class="modal-bar"><i></i><i></i><i></i><b>solicitud_clases.sh</b><button class="modal-x" onclick="closeClasesModal()" aria-label="Cerrar">✕</button></div>
+    <div class="modal-body">
+      <div id="clasesFormView">
+      <h3 id="clasesTitle">Solicitar información</h3>
+      <p class="sub">¿Necesitas aprobar una materia concreta, estás preparando una certificación o simplemente quieres aprender Hacking? Cuéntame qué buscas y te respondo lo antes posible.</p>
+      <form id="clasesForm" novalidate>
+        <div class="fld" id="f-email">
+          <label>Correo electrónico <span class="req">*</span></label>
+          <input type="email" name="email" placeholder="tucorreo@ejemplo.com" autocomplete="email">
+          <span class="err">Introduce un correo válido.</span>
+        </div>
+        <div class="fld">
+          <label>Teléfono <span class="opt">(opcional)</span></label>
+          <input type="tel" name="telefono" placeholder="+34 600 000 000" autocomplete="tel">
+        </div>
+        <div class="fld" id="f-msg">
+          <label>¿Qué te gustaría aprender? <span class="req">*</span></label>
+          <textarea name="mensaje" placeholder="Cuéntame tu nivel actual, objetivos, disponibilidad..."></textarea>
+          <span class="err">Escribe un breve mensaje.</span>
+        </div>
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+        <button type="submit" class="modal-send" id="clasesSend">Enviar solicitud →</button>
+        <p class="modal-err" id="clasesErr">No se pudo enviar. Inténtalo de nuevo en un momento.</p>
+        <p class="modal-note">Se enviará directamente a russ0ski.</p>
+      </form>
+      </div>
+      <div id="clasesOk" class="ok-view">
+        <div class="ok-check">✓</div>
+        <h3 class="ok-title">¡Solicitud enviada!</h3>
+        <p class="ok-text">Gracias por tu interés. Te responderé lo antes posible al correo que has indicado.</p>
+        <button type="button" class="modal-send" onclick="closeClasesModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   document.getElementById('y').textContent = new Date().getFullYear();
   const phrases = ["Cyber Security Engineer", "Detectar, priorizar y mitigar", "Qualys & Tenable automation", "Del scan al export en segundos", "OSCP, CPTS y CRTP en preparación"];
@@ -440,6 +519,42 @@
   })();
   const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('on')), {threshold:.12});
   document.querySelectorAll('.reveal').forEach(n => io.observe(n));
+
+  // --- Modal de clases ---
+  const WEB3FORMS_KEY = "71899d9a-9dc3-4837-9b12-7905fb732491";
+  function openClasesModal(){ const m=document.getElementById('clasesModal'); m.classList.add('open'); document.body.style.overflow='hidden';
+    document.getElementById('clasesFormView').style.display=''; document.getElementById('clasesOk').classList.remove('show');
+    document.getElementById('clasesForm').reset(); document.querySelectorAll('#clasesForm .fld').forEach(f=>f.classList.remove('invalid')); }
+  function showClasesOk(){ document.getElementById('clasesFormView').style.display='none'; document.getElementById('clasesOk').classList.add('show'); }
+  function closeClasesModal(){ document.getElementById('clasesModal').classList.remove('open'); document.body.style.overflow=''; }
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeClasesModal(); });
+  document.getElementById('clasesForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const email=this.email.value.trim(), tel=this.telefono.value.trim(), msg=this.mensaje.value.trim();
+    const okEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    document.getElementById('f-email').classList.toggle('invalid', !okEmail);
+    document.getElementById('f-msg').classList.toggle('invalid', msg.length===0);
+    if(!okEmail || msg.length===0) return;
+    const btn=document.getElementById('clasesSend'), errEl=document.getElementById('clasesErr');
+    errEl.classList.remove('show');
+    if(this.botcheck.checked) return; // honeypot anti-spam
+    btn.disabled=true; const prev=btn.textContent; btn.textContent='Enviando...';
+    fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: 'Nueva solicitud de clases - russ0ski.github.io',
+        from_name: 'Web russ0ski',
+        email: email,
+        telefono: tel || '(no indicado)',
+        mensaje: msg
+      })
+    }).then(r=>r.json()).then(data=>{
+      if(data.success){ showClasesOk(); }
+      else { errEl.classList.add('show'); btn.disabled=false; btn.textContent=prev; }
+    }).catch(()=>{ errEl.classList.add('show'); btn.disabled=false; btn.textContent=prev; });
+  });
 </script>
 </body>
 </html>

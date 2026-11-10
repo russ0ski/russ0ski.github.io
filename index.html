@@ -398,19 +398,19 @@
         <div class="icon">✎</div>
         <h3>Clases de Hacking Ético</h3>
         <p>Clases particulares online de iniciación al Hacking. Aprende los conceptos necesarios y domina la metodología del Pentesting para iniciarte en este apasionante mundo, de la mano de un profesional del sector.</p>
-        <div class="foot"><span class="cta-hint">solicitar info →</span></div>
+        <div class="foot"><span class="price" style="margin-left:0">desde 20 €</span><span class="cta-hint">solicitar info →</span></div>
       </div>
       <div class="card card-clickable" onclick="openClasesModal('Early Warning Bulleter')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openClasesModal('Early Warning Bulleter')}">
         <div class="icon">⚠</div>
         <h3>Early Warning Bulleter</h3>
         <p>Cruza fuentes públicas de amenazas recientes con el inventario de Qualys para generar boletines de alerta temprana personalizados por cliente, con el listado de assets afectados y el detalle actualizado de mitigación.</p>
-        <div class="foot"><span class="cta-hint">solicitar info →</span></div>
+        <div class="foot"><span class="price" style="margin-left:0">desde 450 €</span><span class="cta-hint">solicitar info →</span></div>
       </div>
       <div class="card card-clickable" onclick="openClasesModal('Heartbeat Controller')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openClasesModal('Heartbeat Controller')}">
         <div class="icon">♥</div>
         <h3>Heartbeat Controller</h3>
         <p>Reporte diario de los assets con un agente de Qualys instalado. Notifica qué máquinas llevan más de una semana o un mes sin reportar, revisa agentes duplicados e informa qué nuevos agentes se han instalado.</p>
-        <div class="foot"><span class="cta-hint">solicitar info →</span></div>
+        <div class="foot"><span class="price" style="margin-left:0">desde 200 €</span><span class="cta-hint">solicitar info →</span></div>
       </div>
       <div class="card">
         <div class="icon">⚙</div>
@@ -496,8 +496,9 @@
           <input type="tel" name="telefono" placeholder="+34 600 000 000" autocomplete="tel">
         </div>
         <div class="fld" id="f-activos" style="display:none">
-          <label>Nº de activos aprox. <span class="opt">(opcional)</span></label>
+          <label>Nº de assets aprox. <span class="req">*</span></label>
           <input type="text" name="activos" placeholder="p. ej. 500" autocomplete="off">
+          <span class="err">Indica un número aproximado de assets.</span>
         </div>
         <div class="fld" id="f-msg">
           <label>¿Qué te gustaría aprender? <span class="req">*</span></label>
@@ -564,10 +565,13 @@
   document.getElementById('clasesForm').addEventListener('submit', function(e){
     e.preventDefault();
     const email=this.email.value.trim(), tel=this.telefono.value.trim(), msg=this.mensaje.value.trim();
+    const needActivos = infoServicio !== 'Clases de Hacking Ético';
+    const activos = this.activos.value.trim();
     const okEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     document.getElementById('f-email').classList.toggle('invalid', !okEmail);
     document.getElementById('f-msg').classList.toggle('invalid', msg.length===0);
-    if(!okEmail || msg.length===0) return;
+    document.getElementById('f-activos').classList.toggle('invalid', needActivos && activos.length===0);
+    if(!okEmail || msg.length===0 || (needActivos && activos.length===0)) return;
     const btn=document.getElementById('clasesSend'), errEl=document.getElementById('clasesErr');
     errEl.classList.remove('show');
     if(this.botcheck.checked) return; // honeypot anti-spam
@@ -581,7 +585,7 @@
       telefono: tel || '(no indicado)',
       mensaje: msg
     };
-    if(infoServicio !== 'Clases de Hacking Ético'){ payload.n_activos = (this.activos.value.trim() || '(no indicado)'); }
+    if(needActivos){ payload.n_activos = activos; }
     fetch('https://api.web3forms.com/submit',{
       method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},

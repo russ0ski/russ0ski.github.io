@@ -400,17 +400,17 @@
         <p>Clases particulares online de iniciación al Hacking. Aprende los conceptos necesarios y domina la metodología del Pentesting para iniciarte en este apasionante mundo, de la mano de un profesional del sector.</p>
         <div class="foot"><span class="cta-hint">solicitar info →</span></div>
       </div>
-      <div class="card">
+      <div class="card card-clickable" onclick="openClasesModal('Early Warning Bulleter')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openClasesModal('Early Warning Bulleter')}">
         <div class="icon">⚠</div>
         <h3>Early Warning Bulleter</h3>
         <p>Cruza fuentes públicas de amenazas recientes con el inventario de Qualys para generar boletines de alerta temprana personalizados por cliente, con el listado de assets afectados y el detalle actualizado de mitigación.</p>
-        <div class="foot"><span class="price">a consultar</span></div>
+        <div class="foot"><span class="cta-hint">solicitar info →</span></div>
       </div>
-      <div class="card">
+      <div class="card card-clickable" onclick="openClasesModal('Heartbeat Controller')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openClasesModal('Heartbeat Controller')}">
         <div class="icon">♥</div>
         <h3>Heartbeat Controller</h3>
         <p>Reporte diario de los assets con un agente de Qualys instalado. Notifica qué máquinas llevan más de una semana o un mes sin reportar, revisa agentes duplicados e informa qué nuevos agentes se han instalado.</p>
-        <div class="foot"><span class="price">a consultar</span></div>
+        <div class="foot"><span class="cta-hint">solicitar info →</span></div>
       </div>
       <div class="card">
         <div class="icon">⚙</div>
@@ -484,7 +484,7 @@
     <div class="modal-body">
       <div id="clasesFormView">
       <h3 id="clasesTitle">Solicitar información</h3>
-      <p class="sub">¿Necesitas aprobar una materia concreta, estás preparando una certificación o simplemente quieres aprender Hacking? Cuéntame qué buscas y te respondo lo antes posible.</p>
+      <p class="sub" id="clasesSub">¿Necesitas aprobar una materia concreta, estás preparando una certificación o simplemente quieres aprender Hacking? Cuéntame qué buscas y te respondo lo antes posible.</p>
       <form id="clasesForm" novalidate>
         <div class="fld" id="f-email">
           <label>Correo electrónico <span class="req">*</span></label>
@@ -494,6 +494,10 @@
         <div class="fld">
           <label>Teléfono <span class="opt">(opcional)</span></label>
           <input type="tel" name="telefono" placeholder="+34 600 000 000" autocomplete="tel">
+        </div>
+        <div class="fld" id="f-activos" style="display:none">
+          <label>Nº de activos aprox. <span class="opt">(opcional)</span></label>
+          <input type="text" name="activos" placeholder="p. ej. 500" autocomplete="off">
         </div>
         <div class="fld" id="f-msg">
           <label>¿Qué te gustaría aprender? <span class="req">*</span></label>
@@ -535,7 +539,23 @@
 
   // --- Modal de clases ---
   const WEB3FORMS_KEY = "71899d9a-9dc3-4837-9b12-7905fb732491";
-  function openClasesModal(){ const m=document.getElementById('clasesModal'); m.classList.add('open'); document.body.style.overflow='hidden';
+  const CLASES_SUB = '¿Necesitas aprobar una materia concreta, estás preparando una certificación o simplemente quieres aprender Hacking? Cuéntame qué buscas y te respondo lo antes posible.';
+  let infoServicio = 'Clases de Hacking Ético';
+  function openClasesModal(servicio){
+    infoServicio = servicio || 'Clases de Hacking Ético';
+    const sub = document.getElementById('clasesSub');
+    if(infoServicio === 'Clases de Hacking Ético'){ sub.innerHTML = CLASES_SUB; }
+    else { sub.innerHTML = 'Cuéntame qué necesitas sobre <strong style="color:#fff">'+infoServicio+'</strong> y me pongo en contacto contigo lo antes posible.'; }
+    document.getElementById('f-activos').style.display = (infoServicio === 'Clases de Hacking Ético') ? 'none' : '';
+    const msgLabel = document.querySelector('#f-msg label'), msgTA = document.querySelector('#f-msg textarea');
+    if(infoServicio === 'Clases de Hacking Ético'){
+      msgLabel.innerHTML = '¿Qué te gustaría aprender? <span class="req">*</span>';
+      msgTA.placeholder = 'Cuéntame tu nivel actual, objetivos, disponibilidad...';
+    } else {
+      msgLabel.innerHTML = 'Cuéntame tu caso <span class="req">*</span>';
+      msgTA.placeholder = 'Tu entorno, qué necesitas, plazos...';
+    }
+    const m=document.getElementById('clasesModal'); m.classList.add('open'); document.body.style.overflow='hidden';
     document.getElementById('clasesFormView').style.display=''; document.getElementById('clasesOk').classList.remove('show');
     document.getElementById('clasesForm').reset(); document.querySelectorAll('#clasesForm .fld').forEach(f=>f.classList.remove('invalid')); }
   function showClasesOk(){ document.getElementById('clasesFormView').style.display='none'; document.getElementById('clasesOk').classList.add('show'); }
@@ -552,17 +572,20 @@
     errEl.classList.remove('show');
     if(this.botcheck.checked) return; // honeypot anti-spam
     btn.disabled=true; const prev=btn.textContent; btn.textContent='Enviando...';
+    const payload = {
+      access_key: WEB3FORMS_KEY,
+      subject: 'Solicitud de info (' + infoServicio + ') - russ0ski.github.io',
+      from_name: 'Web russ0ski',
+      servicio: infoServicio,
+      email: email,
+      telefono: tel || '(no indicado)',
+      mensaje: msg
+    };
+    if(infoServicio !== 'Clases de Hacking Ético'){ payload.n_activos = (this.activos.value.trim() || '(no indicado)'); }
     fetch('https://api.web3forms.com/submit',{
       method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify({
-        access_key: WEB3FORMS_KEY,
-        subject: 'Nueva solicitud de clases - russ0ski.github.io',
-        from_name: 'Web russ0ski',
-        email: email,
-        telefono: tel || '(no indicado)',
-        mensaje: msg
-      })
+      body: JSON.stringify(payload)
     }).then(r=>r.json()).then(data=>{
       if(data.success){ showClasesOk(); }
       else { errEl.classList.add('show'); btn.disabled=false; btn.textContent=prev; }
